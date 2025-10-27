@@ -1,3 +1,50 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 # Create your models here.
+
+
+class Event(models.Model):
+    """
+    Store a single event created by hose (user)
+    """
+    title       = models.CharField(max_length=100, unique=True)
+    slug        = models.CharField(unique=True, blank=True)
+    date        = models.DateTimeField()
+    location    = models.CharField(max_length=150)
+    host        =  models.ForeignKey(
+                    User, on_delete=models.CASCADE, related_name="hosted_events")
+    description = models.TextField(blank=True)
+    capacity    = models.PositiveIntegerField()
+    #image placeholder
+    created_on  = models.DateTimeField(auto_now_add=True)
+    updated_on  = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-date"]
+
+    def __str__(self):
+        return f"{self.title} | hosted by {self.host}"
+    
+
+class Review(models.Model):
+    """
+    Store a review entry related to :model:`events.Event`
+    """
+    event       = models.ForeignKey(
+                    Event, on_delete=models.CASCADE, related_name="reviews")
+    author      = models.ForeignKey(
+                    User, on_delete=models.CASCADE, related_name="reviewer")
+    rating      = models.PositiveIntegerField(
+                    validators=[MaxValueValidator(5), MinValueValidator(1)])
+    body        = models.TextField()
+    created_on  = models.DateTimeField(auto_now_add=True)
+    updated_on  = models.DateTimeField(auto_now=True)
+
+    class Meta: 
+        ordering = ["rating"]
+    
+    def __str__(self):
+        return f"Reviewed {self.event} by {self.author}"

@@ -1,6 +1,10 @@
+#from django.urls import path
+#from .views import home_page_view
+
+from . import views
 from django.urls import path
-from .views import home_page_view
 
 urlpatterns = [
-    path("", home_page_view)
+    path('', views.EventList.as_view(), name='home')
+    #path("", home_page_view)
 ]

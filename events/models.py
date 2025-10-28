@@ -27,7 +27,7 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.title} | hosted by {self.host}"
-    
+
 
 class Review(models.Model):
     """
@@ -43,8 +43,25 @@ class Review(models.Model):
     created_on  = models.DateTimeField(auto_now_add=True)
     updated_on  = models.DateTimeField(auto_now=True)
 
-    class Meta: 
+    class Meta:
         ordering = ["rating"]
-    
+
     def __str__(self):
-        return f"Reviewed {self.event} by {self.author}"
+        return f"{self.event} - reviewed by {self.author}"
+
+
+class Booking(models.Model):
+    """
+    Store a event booking related to :model:`events.Event`
+    """
+    user      = models.ForeignKey(
+                    User, on_delete=models.CASCADE, related_name="event_booker")
+    event       = models.ForeignKey(
+                    Event, on_delete=models.CASCADE, related_name="event_bookings")
+    booked_at   = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["booked_at"]
+
+    def __str__(self):
+        return f"{self.event} booked by {self.user}"

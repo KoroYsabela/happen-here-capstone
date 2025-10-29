@@ -11,4 +11,4 @@ from .models import Event
 class EventList(generic.ListView):
     #model = Event
     queryset = Event.objects.all()
-    template_name = "event_list.html"
+    template_name = "events/index.html"

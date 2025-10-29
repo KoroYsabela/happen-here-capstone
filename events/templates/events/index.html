@@ -6,6 +6,37 @@
 <div class="container">
     <div class="row">
 
+        <!-- Events Column -->
+        <div class="col-12 mt-3 left">
+            <div class="row">
+                {% for event in event_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="image-container">
+                                <div class="image-flash">
+                                    <p class="author">Host: {{ event.host }}</p>
+                                </div>
+                            </div>
+                            <a href="#" class="post-link">
+                                <h2 class="card-title">{{ event.title }}</h2>
+                            </a>
+
+                            <hr />
+                            <p class="card-text text-muted h6">{{ event.date}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+            </div>
+            <div class="row">
+                {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+
     </div>
 </div>
 

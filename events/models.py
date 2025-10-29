@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from cloudinary.models import CloudinaryField
 
+
+STATUS = ((0, "Draft"), (1, "Published"))
 
 # Create your models here.
 
@@ -18,8 +21,9 @@ class Event(models.Model):
                     User, on_delete=models.CASCADE, related_name="hosted_events")
     description = models.TextField(blank=True)
     capacity    = models.PositiveIntegerField()
-    #image placeholder
+    featured_image = CloudinaryField('image', default='placeholder')
     created_on  = models.DateTimeField(auto_now_add=True)
+    status      = models.IntegerField(choices=STATUS, default=0)
     updated_on  = models.DateTimeField(auto_now=True)
 
     class Meta:

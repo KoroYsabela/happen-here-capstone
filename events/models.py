@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from cloudinary.models import CloudinaryField
@@ -25,6 +26,20 @@ class Event(models.Model):
     created_on  = models.DateTimeField(auto_now_add=True)
     status      = models.IntegerField(choices=STATUS, default=0)
     updated_on  = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        # Create slug from title if not already set (from admin)
+        # as slug creation is not in host event form
+        if not self.slug:
+            base_slug = slugify(self.title)
+            slug = base_slug
+            # Handle any duplicate titles by using counter
+            counter = 1
+            while Event.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["-date"]

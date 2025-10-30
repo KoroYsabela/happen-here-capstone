@@ -22,9 +22,9 @@
                                 {% endif %}
                                 <div class="image-flash">
                                     <p class="author">Host: {{ event.host }}</p>
-                                </div>
                             </div>
-                            <a href="#" class="post-link">
+                            </div>
+                            <a href="{% url 'event_detail' event.slug %}" class="event-link">
                                 <h2 class="card-title">{{ event.title }}</h2>
                             </a>
                             <hr />

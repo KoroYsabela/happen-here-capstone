@@ -3,5 +3,46 @@
 {% block content %}
 
 
+<div class="masthead">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-md-6 masthead-text">
+                <!-- Event title goes in these h1 tags -->
+                <h1 class="event-title">{{ event.title }}</h1>
+                <!-- Event host -->
+                <p class="event-subtitle">Hosted by {{ event.host }}</p>
+            </div>
+            <div class="d-none d-md-block col-md-6 masthead-image">
+                <div class="image-container">
+                    {% if "placeholder" in event.featured_image.url %}
+                    <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
+                    alt="placeholder image">
+                    {% else %}
+                    <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col card mb-4  mt-3 left  top">
+            <div class="card-body">
+                <!-- The post content goes inside the card-text. -->
+                <!-- Use the | safe filter inside the template tags -->
+                <h2>
+                    {{ coder }}
+                </h2> 
+                <article class="card-text">
+                    {{ event.description | safe }}
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- event_detail.html content ends here -->
 {% endblock %}

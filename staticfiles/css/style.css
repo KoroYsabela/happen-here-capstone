@@ -1,0 +1,15 @@
+
+/* Root Variables */
+:root {
+    /* Fonts */
+    --headings-font: "Raleway", sans-serif;
+    --main-font: "Roboto", sans-serif;
+}
+
+body {
+    font-family: --var(--main-font)
+}
+
+h1 {
+    font-family: --var(--headings-font)
+}

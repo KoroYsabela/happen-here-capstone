@@ -1,6 +1,7 @@
 {% load static %}
 
 {% url 'home' as home_url %}
+{% url 'myevents' as myevents_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
@@ -45,7 +46,8 @@
                             href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My Events</a>
+                        <a class="nav-link {% if request.path == myevents_url %}active" aria-current="page{% endif %}"
+                            href="{% url 'myevents' %}">My Events</a>
                     </li> 
                     {% if user.is_authenticated %}
                     <li class="nav-item">

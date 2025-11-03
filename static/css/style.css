@@ -13,3 +13,9 @@ body {
 h1 {
     font-family: --var(--headings-font)
 }
+
+/*
+#host-event-modal {
+    width: 80%;
+}
+*/

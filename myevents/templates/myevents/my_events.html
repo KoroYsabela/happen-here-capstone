@@ -7,11 +7,11 @@
 <div class="container">
   <div class="row">
     <div>
-        <h1>
+        <h1 class="my-2 py-2">
             My Events
         </h1>
     </div>
-    <div id="myevents-tabs">
+    <div id="myevents-tabs">      
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link active" id="nav-host-tab" data-bs-toggle="tab" data-bs-target="#nav-host" type="button" role="tab" aria-controls="nav-host" aria-selected="true">Host</button>
@@ -23,7 +23,7 @@
           <!-- HOSTED EVENTS -->
           <div class="tab-pane fade show active" id="nav-host" role="tabpanel" aria-labelledby="nav-hompage">
             <!-- Host Event button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#host-event-modal">
+            <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#host-event-modal">
             Host Event
             </button>
             <div class="mb-5">
@@ -66,7 +66,7 @@
                           >
                             Edit
                           </button>
-                          
+                          <button class="btn btn-danger">Delete</button>
                           <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                                
                         </div>
                       </div>
@@ -109,6 +109,7 @@
                             >
                               Edit
                             </button>
+                            <button class="btn btn-danger">Delete</button>
                           </div>
                         </div>
                       </div>
@@ -122,14 +123,72 @@
           </div>
           <!-- BOOKED EVENTS -->
           <div class="tab-pane fade" id="nav-booked" role="tabpanel" aria-labelledby="nav-booked-tab">
-              <div>
-                  <h1>This is the my booked events</h1>
+              <div mb-5>
+                <div class="booked_upcoming">
+                  <h4>Upcoming...</h4> 
+                  {% if booked_upcoming %}
+                  <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for booked_upcoming_event in booked_upcoming %}
+                      {% with event=booked_upcoming_event.event%}
+                      <div class="col">
+                        <div class="card h-100 shadow-sm border-warning">
+                          {% if "placeholder" in event.featured_image.url %}
+                          <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
+                          alt="placeholder image">
+                          {% else %}
+                          <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
+                          {% endif %}
+                          <div class="card-body">.
+                            <h5 class="card-title">{{ event.title }}</h5>
+                            <p class="text-muted small mb-2">📍 {{ event.location }}</p>
+                            <p class="small">🗓️ {{ event.date|date:"M d, Y H:i" }}</p>
+                            <button>
+                              Cancel
+                            </button>
+                            <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                               
+                          </div>                        
+                        </div>
+                      </div>
+                      {% endwith %}
+                    {% endfor %}
+                  </div>
+                  {% endif %} 
+                </div>                  
               </div>
           </div>
           <!-- PAST EVENTS -->
           <div class="tab-pane fade" id="nav-past" role="tabpanel" aria-labelledby="nav-past-tab">
-              <div>
-                  <h1>This is the my past events (add reviews)</h1>
+              <div mb-5>
+                <div class="booked_past">
+                  <h4>Past Events</h4> 
+                  {% if booked_upcoming %}
+                  <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for booked_past_event in booked_past %}
+                      {% with event=booked_past_event.event%}
+                      <div class="col">
+                        <div class="card h-100 shadow-sm border-warning">
+                          {% if "placeholder" in event.featured_image.url %}
+                          <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
+                          alt="placeholder image">
+                          {% else %}
+                          <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
+                          {% endif %}
+                          <div class="card-body">.
+                            <h5 class="card-title">{{ event.title }}</h5>
+                            <p class="text-muted small mb-2">📍 {{ event.location }}</p>
+                            <p class="small">🗓️ {{ event.date|date:"M d, Y H:i" }}</p>
+                            <button>
+                              Cancel
+                            </button>
+                            <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                               
+                          </div>                        
+                        </div>
+                      </div>
+                      {% endwith %}
+                    {% endfor %}
+                  </div>
+                  {% endif %} 
+                </div>                  
               </div>
           </div>
       </div>

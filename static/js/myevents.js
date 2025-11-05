@@ -1,3 +1,5 @@
+/* jshint version: */
+
 document.addEventListener('DOMContentLoaded', function () {
   const editButtons = document.querySelectorAll('.edit-btn');
   const modal = document.getElementById('editEventFormModal');

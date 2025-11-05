@@ -1,80 +1,120 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import HostEventForm
 from events.models import Event
+# Unused imports removed
 
 
 @login_required
 def myevents_page(request):
     """
     Render the My Events page
+    Handles:
+        - Hosting event
+        - Editing event
     """
     hosted_events = Event.objects.filter(host=request.user).order_by('-created_on')
-
-    draft_events = hosted_events.filter(status='0')
+    draft_events = hosted_events.filter(status=0)
     published_events = hosted_events.filter(status=1)
 
+    # default empty form
+    event_form = HostEventForm()
+    edit_form = None
+
     if request.method == "POST":
-        # Include request.FILES to handle file uploads from the form
-        event_form = HostEventForm(request.POST, request.FILES)
+        event_slug = request.POST.get("event_slug")
 
-        if event_form.is_valid():
-            event = event_form.save(commit=False)
-            event.host = request.user
+        # If event_slug exists → editing an event
+        if event_slug:
+            event = get_object_or_404(Event, slug=event_slug, host=request.user)
+            edit_form = HostEventForm(request.POST, request.FILES, instance=event)
 
-            # if draft or published
-            if 'publish' in request.POST:
-                event.status = 1
-                messages.success(request, "Your event has been published!")
+            if edit_form.is_valid():
+                updated_event = edit_form.save(commit=False)
+
+                if 'publish' in request.POST:
+                    updated_event.status = 1
+                    messages.success(request, "Event updated and published.")
+                elif 'save_draft' in request.POST:
+                    updated_event.status = 0
+                    messages.info(request, "Event saved as draft.")
+                else:
+                    messages.success(request, "Event updated.")
+
+                updated_event.save()
+                return redirect('myevents')
             else:
-                event.status = 0
-                messages.info(request, "Your event has been saved as a draft.")
-
-            event.save()
-            return redirect('myevents')
+                messages.error(request, "Please correct the errors in your edit form.")
+        # Otherwise → hosting new event
         else:
-            messages.error(request, "There was an error with your form. " \
-            "Please check you have filled in the fields correctly.")
-    else:
-        event_form = HostEventForm
+            event_form = HostEventForm(request.POST, request.FILES)
+            if event_form.is_valid():
+                event = event_form.save(commit=False)
+                event.host = request.user
 
-    return render(
-        request,
-        'myevents/my_events.html',
-        {'draft_events': draft_events,
-         'published_events': published_events,
-         'event_form': event_form,
-         })
+                if 'publish' in request.POST:
+                    event.status = 1
+                    messages.success(request, "Your event has been published!")
+                else:
+                    event.status = 0
+                    messages.info(request, "Event saved as draft.")
+
+                event.save()
+                return redirect('myevents')
+            else:
+                messages.error(request, "There was an error with your form. Please check your fields.")
+
+    return render(request, 'myevents/my_events.html', {
+        'draft_events': draft_events,
+        'published_events': published_events,
+        'event_form': event_form,
+        'edit_form': edit_form or HostEventForm(),
+    })
 
 
 #@login_required
-#def host_event(request):
+#def edit_event(request, slug):
 #    """
-#    Host an event
+#    Edit events that are both published and draft
 #    """
+#    event = get_object_or_404(Event, slug=slug, host=request.user)
+#
 #    if request.method == "POST":
-#        # Include request.FILES to handle file uploads from the form
-#        event_form = HostEventForm(request.POST, request.FILES)
+#        form = HostEventForm(request.POST, request.FILES, instance=event)
+#        if form.is_valid():
+#            edit_event = form.save(commit=False)
 #
-#        if event_form.is_valid():
-#            event = event_form.save(commit=False)
-#            event.host = request.user
-#
-#            # if draft or published
+#            # Update status depending on which button was clicked
 #            if 'publish' in request.POST:
-#                event.status = 1
-#                messages.success(request, "Your event has been published!")
-#            else:
-#                event.status = 0
+#                edit_event.status = 1
+#                messages.success(
+#                    request,
+#                    "Your event has been published successfully!"
+#                )
+#            elif 'save_draft' in request.POST:
+#                edit_event.status = 0
 #                messages.info(request, "Your event has been saved as a draft.")
+#            else:
+#                messages.success(
+#                    request,
+#                    "Your event has been updated successfully!"
+#                )
 #
-#            event.save()
+#            edit_event.save()
 #            return redirect('myevents')
+#    else:
+#        form = HostEventForm(instance=event)
 #
-#        # Invalid form — show errors
-#        return render(request, 'myevents/my_events.html', {'event_form': event_form})
+#    # Render same page again with the edit form modal visible
+#    hosted_events = (
+#        Event.objects.filter(host=request.user)
+#        .order_by('-created_on')
+#    )
+#    return render(request, 'myevents/my_events.html', {
+#        'hosted_events': hosted_events,
+#        'edit_event_form': form,
+#        'edit_event_obj': event,
+#        'event_form': HostEventForm(),  # for creating new events
+#    })
 #
-#    #  Add this for GET requests
-#    event_form = HostEventForm()
-#    return render(request, 'myevents/my_events.html', {'event_form': event_form})

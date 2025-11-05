@@ -1,9 +1,11 @@
 from django import forms
-from django_summernote.widgets import SummernoteWidget
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
+from django_summernote.fields import SummernoteTextFormField, SummernoteTextField
 from events.models import Event
 
 
 class HostEventForm(forms.ModelForm):
+
     class Meta:
         model = Event
         fields = ('title', 'date', 'location',

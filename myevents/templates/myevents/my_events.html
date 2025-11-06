@@ -63,6 +63,7 @@
                             data-location="{{ event.location }}"
                             data-description="{{ event.description|escapejs }}"
                             data-slug="{{ event.slug }}"
+                            data-status="{{ event.status }}"
                           >
                             Edit
                           </button>
@@ -238,7 +239,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" name="save_draft" class="btn btn-outline-warning">Save as Draft</button>
+          <button type="submit" name="save_draft" class="btn btn-outline-warning d-none" id="saveDraftBtn">Save as Draft</button>
           <button type="submit" name="publish" class="btn btn-success">Publish</button>
         </div>
       </form>

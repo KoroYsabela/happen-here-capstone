@@ -22,6 +22,16 @@ document.addEventListener('DOMContentLoaded', function () {
       if (capacityInput) capacityInput.value = button.getAttribute('data-capacity');
       if (locationInput) locationInput.value = button.getAttribute('data-location');
 
+      const status = button.getAttribute('data-status');
+      const saveDraftBtn = document.getElementById('saveDraftBtn');
+
+      // If event is published, hide "Save as Draft" button
+      if (status === '1' && saveDraftBtn) {
+        saveDraftBtn.classList.add('d-none');
+      } else if (saveDraftBtn) {
+        saveDraftBtn.classList.remove('d-none');
+      }
+
       // ✅ Store the event description for later use
       descVal = button.getAttribute('data-description') || "";
 

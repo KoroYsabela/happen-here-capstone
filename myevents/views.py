@@ -48,8 +48,12 @@ def myevents_page(request):
                     updated_event.status = 1
                     messages.success(request, "Event updated and published.")
                 elif 'save_draft' in request.POST:
-                    updated_event.status = 0
-                    messages.info(request, "Event saved as draft.")
+                    # Published event cant be returned to draft, only edit or delete
+                    if event.status == 1:
+                        messages.warning(request, "Published events cannot be reverted to drafts.")
+                    else:
+                        updated_event.status = 0
+                        messages.info(request, "Event saved as draft.")
                 else:
                     messages.success(request, "Event updated.")
 

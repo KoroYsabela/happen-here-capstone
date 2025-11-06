@@ -31,60 +31,29 @@ def myevents_page(request):
 
     # Host Event & Edit Form
     event_form = HostEventForm()
-    edit_form = None
 
-    if request.method == "POST":
-        event_slug = request.POST.get("event_slug")
+    if request.method == "POST":    
+        event_form = HostEventForm(request.POST, request.FILES)
+        if event_form.is_valid():
+            event = event_form.save(commit=False)
+            event.host = request.user
 
-        # If event_slug exists → editing an event
-        if event_slug:
-            event = get_object_or_404(Event, slug=event_slug, host=request.user)
-            edit_form = HostEventForm(request.POST, request.FILES, instance=event)
-
-            if edit_form.is_valid():
-                updated_event = edit_form.save(commit=False)
-
-                if 'publish' in request.POST:
-                    updated_event.status = 1
-                    messages.success(request, "Event updated and published.")
-                elif 'save_draft' in request.POST:
-                    # Published event cant be returned to draft, only edit or delete
-                    if event.status == 1:
-                        messages.warning(request, "Published events cannot be reverted to drafts.")
-                    else:
-                        updated_event.status = 0
-                        messages.info(request, "Event saved as draft.")
-                else:
-                    messages.success(request, "Event updated.")
-
-                updated_event.save()
-                return redirect('myevents')
+            if 'publish' in request.POST:
+                event.status = 1
+                messages.success(request, "Your event has been published!")
             else:
-                messages.error(request, "Please correct the errors in your edit form.")
-        # Otherwise → hosting new event
+                event.status = 0
+                messages.info(request, "Event saved as draft.")
+
+            event.save()
+            return redirect('myevents')
         else:
-            event_form = HostEventForm(request.POST, request.FILES)
-            if event_form.is_valid():
-                event = event_form.save(commit=False)
-                event.host = request.user
-
-                if 'publish' in request.POST:
-                    event.status = 1
-                    messages.success(request, "Your event has been published!")
-                else:
-                    event.status = 0
-                    messages.info(request, "Event saved as draft.")
-
-                event.save()
-                return redirect('myevents')
-            else:
-                messages.error(request, "There was an error with your form. Please check your fields.")
+            messages.error(request, "There was an error with your form. Please check your fields.")
 
     return render(request, 'myevents/my_events.html', {
         'draft_events': draft_events,
         'published_events': published_events,
         'event_form': event_form,
-        'edit_form': edit_form or HostEventForm(),
         'booked_upcoming': booked_upcoming,
         'booked_past': booked_past,
     })

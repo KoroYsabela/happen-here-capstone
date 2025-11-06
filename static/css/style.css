@@ -6,6 +6,7 @@
     --main-font: "Roboto", sans-serif;
     --primary-bg-color: #F4E1B0;    /* Wheat */
     --secondary-bg-color: #A5D6A7;  /* Celadon */
+    --tertiary-bg-colour: #2E7D32;  /* Office Green */
     --primary-font-color: #4E342E;  /* Van Dyke*/
 }
 
@@ -40,6 +41,34 @@ h5 {
 
 #navbar .navbar-toggler {
     background-color: white;
+}
+
+/* Events Detail section */
+
+/* Masthead styles */
+.masthead { 
+    padding: 1.5rem 0; 
+}
+
+.masthead .masthead-text { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
+
+.masthead-image .image-container { 
+    overflow: hidden; 
+    border-radius: 6px; 
+}
+
+.masthead-image img { 
+    object-fit: cover; 
+    display: block; 
+}
+
+/* Booking Events */
+#bookingbtn {
+    background-color: var(--tertiary-bg-color);
 }
 
 
@@ -92,3 +121,9 @@ h5 {
     }
 }
 */
+
+@media (min-width: 992px) {
+    /* Masthead styles */
+    .masthead-image .image-container { height: 320px; }
+    .masthead-image img { height: 100%; }
+}

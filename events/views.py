@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from .models import Event, Booking
+from myevents.forms import HostEventForm
 
 
 # Create your views here.
@@ -33,14 +34,68 @@ class EventList(generic.ListView):
 
 
 def event_detail(request, slug):
-    queryset = Event.objects.filter(status=1)
-    event = get_object_or_404(queryset, slug=slug)
+    # Always fetch the event for display
+    event = get_object_or_404(Event, slug=slug)
+
+    # Provide an edit form instance (pre-filled) for template rendering.
+    # Only hosts should be able to submit edits, but providing the form
+    # in the template avoids template errors. The modal will only be shown
+    # when routed through the `edit_event` view (see below).
+    if request.user.is_authenticated and request.user == event.host:
+        edit_form = HostEventForm(instance=event)
+    else:
+        edit_form = HostEventForm()
 
     return render(
         request,
         "events/event_detail.html",
-        {"event": event},
+        {
+            "event": event,
+            "edit_form": edit_form,
+        },
     )
+
+
+@login_required
+def edit_event(request, slug):
+    """
+    Render the event detail page with the edit modal open for the host.
+    GET -> show modal with populated form.
+    POST -> process form submission and redirect on success.
+    """
+    event = get_object_or_404(Event, slug=slug, host=request.user)
+
+    if request.method == 'POST':
+        form = HostEventForm(request.POST, request.FILES, instance=event)
+        if form.is_valid():
+            updated = form.save(commit=False)
+            if 'publish' in request.POST:
+                updated.status = 1
+            elif 'save_draft' in request.POST:
+                # prevent published -> draft transition
+                if event.status == 1:
+                    messages.warning(request, "Published events cannot be reverted to drafts.")
+                else:
+                    updated.status = 0
+                    messages.info(request, "Event saved as draft.")
+            updated.save()
+            messages.success(request, "Event updated.")
+            return redirect('event_detail', slug=event.slug)
+        else:
+            messages.error(request, "Please correct the errors in the form.")
+            # Fall through to re-render the page with modal open and errors shown
+
+    else:
+        form = HostEventForm(instance=event)
+
+    return render(
+        request,
+        'events/event_detail.html',
+        {'event': event,
+         'edit_form': form,
+         'show_edit_modal': True},
+    )
+
 
 @login_required
 def book_event(request, slug):

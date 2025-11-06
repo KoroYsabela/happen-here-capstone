@@ -34,7 +34,7 @@
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                   {% for event in published_events %}
                     <div class="col">
-                      <div class="card h-100 shadow-sm">
+                      <div class="card h-100 border-success shadow">
                         {% if "placeholder" in event.featured_image.url %}
                         <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
                         alt="placeholder image">
@@ -63,7 +63,7 @@
                   <div class="row row-cols-1 row-cols-md-3 g-4">
                     {% for event in draft_events %}
                       <div class="col">
-                        <div class="card h-100 shadow-sm border-warning">
+                        <div class="card h-100 shadow border-warning">
                           {% if "placeholder" in event.featured_image.url %}
                           <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
                           alt="placeholder image">
@@ -110,7 +110,7 @@
                     {% for booked_upcoming_event in booked_upcoming %}
                       {% with event=booked_upcoming_event.event%}
                       <div class="col">
-                        <div class="card h-100 shadow-sm border-warning">
+                        <div class="card h-100 shadow border-primary">
                           {% if "placeholder" in event.featured_image.url %}
                           <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
                           alt="placeholder image">
@@ -145,7 +145,7 @@
                     {% for booked_past_event in booked_past %}
                       {% with event=booked_past_event.event%}
                       <div class="col">
-                        <div class="card h-100 shadow-sm border-warning">
+                        <div class="card h-100 shadow border-secondary">
                           {% if "placeholder" in event.featured_image.url %}
                           <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
                           alt="placeholder image">

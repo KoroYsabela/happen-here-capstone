@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
 from django.http import HttpResponseRedirect
 from .models import Event, Booking
 
@@ -10,6 +11,9 @@ from .models import Event, Booking
 
 
 class EventList(generic.ListView):
+    # Current time
+    now = timezone.now()
+
     # Use model + get_queryset to avoid evaluating querysets at import time
     model = Event
     template_name = "events/index.html"
@@ -19,7 +23,7 @@ class EventList(generic.ListView):
 
     def get_queryset(self):
         """Return published events ordered by date."""
-        return Event.objects.filter(status=1).order_by('date')
+        return Event.objects.filter(status=1, date__gte=self.now).order_by('date')  # show only up to next 9 events
 
 
 #class EventDetail(generic.DetailView):

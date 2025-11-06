@@ -5,48 +5,84 @@
 <!-- index.html content starts here -->
 <div class="container">
     <div class="row">
-
-        <!-- Events Column -->
-        <div class="col-12 mt-3 left">
+        <!-- About -->
+        <div id="about" class="section col-12 mt-1 left">
             <div class="row">
-                {% for event in event_list %}
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="image-container">
-                                {% if "placeholder" in event.featured_image.url %}
-                                <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
-                                alt="placeholder image">
-                                {% else %}
-                                <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
-                                {% endif %}
-                                <div class="image-flash">
-                                    <p class="author">Host: {{ event.host }}</p>
-                            </div>
-                            </div>
-                            <a href="{% url 'event_detail' event.slug %}" class="event-link">
-                                <h2 class="card-title">{{ event.title }}</h2>
-                            </a>
-                            <hr />
-                            <p class="card-text text-muted h6">{{ event.date}}
-                            </p>
-                            <hr />
-                            <p class="card-text text-muted h6">{{ event.location}}
-                            </p>                            
-                        </div>
-                    </div>
-                </div>
-                {% if forloop.counter|divisibleby:3 %}
-            </div>
-            <div class="row">
-                {% endif %}
-                {% endfor %}
-
+                <h1>
+                    Welcome
+                </h1>
             </div>
         </div>
-
+        <!-- Upcoming (shows next 6-9 events)-->
+        <div id="upcomingevents" class="section col-12 mt-1 left">
+            <div class="row">
+                <h1>
+                    Upcoming events...
+                </h1>                
+                <div id="carouselUpcomingEvents" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for event in event_list %}
+                            {% if forloop.first or forloop.counter0|divisibleby:3 %}
+                            <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                                <div class="row">
+                            {% endif %}
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-body">
+                                        <div class="image-container">
+                                        {% if "placeholder" in event.featured_image.url %}
+                                        <img class="card-img-top" src="{% static 'images/event_default.jpg' %}" alt="placeholder image">
+                                        {% else %}
+                                        <img class="card-img-top" src="{{ event.featured_image.url }}" alt="{{ event.title }}">
+                                        {% endif %}
+                                        </div>
+                                        <a href="{% url 'event_detail' event.slug %}" class="event-link">
+                                        <h2 class="card-title">{{ event.title }}</h2>
+                                        </a>
+                                        <hr>
+                                        <p class="card-text text-muted h6">
+                                        <i class="fa-solid fa-calendar-days"></i> {{ event.date }}
+                                        </p>
+                                        <p class="card-text text-muted h6">
+                                        <i class="fa-solid fa-location-dot"></i> {{ event.location }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselUpcomingEvents" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselUpcomingEvents" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- All Events -->
+        <div id="all-events" class="section col-12 mt-1 left">
+            <div class="row">
+                <h1>
+                    All Events
+                </h1>
+        </div>
     </div>
 </div>
 
 <!-- index.html content ends here -->
+{% endblock %}
+
+{% block extras %}
+<!-- Scripts --> 
+<script src="{% static 'js/eventsHome.js' %}"></script>
+
 {% endblock %}

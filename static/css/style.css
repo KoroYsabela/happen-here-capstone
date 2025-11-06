@@ -4,23 +4,91 @@
     /* Fonts */
     --headings-font: "Raleway", sans-serif;
     --main-font: "Roboto", sans-serif;
+    --primary-bg-color: #F4E1B0;    /* Wheat */
+    --secondary-bg-color: #A5D6A7;  /* Celadon */
+    --primary-font-color: #4E342E;  /* Van Dyke*/
 }
 
+/* Global styles */
 body {
-    font-family: --var(--main-font)
+    font-family: var(--main-font);
+    color: var(--primary-font-color);
 }
 
-h1 {
-    font-family: --var(--headings-font)
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: var(--headings-font)
 }
 
+.section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Navbar | Navigation section */
+#navbar {
+    background-color: var(--primary-bg-color);
+    
+}
+
+#navbar a {
+    color: var(--primary-font-color);
+}
+
+#navbar .navbar-toggler {
+    background-color: white;
+}
+
+
+/* Event BS Cards*/
 .card-img-top {
     height: 20vh;
     object-fit: center;
 }
 
 /*
-#host-event-modal {
-    width: 80%;
+.image-flash {
+    position: absolute;
+    bottom: 5%;
+    min-width: 30%;
+    left: -2px;
+    background-color: #188181;
+}
+*/
+
+/* My Events page */
+#myevents-tabs .nav-tabs{
+    background-color: var(--secondary-bg-color);
+}
+
+/* Footer section */
+#footer {
+    background-color: var(--primary-bg-color);
+}
+
+/* Media Queries */
+
+/* On small screens: hide all but the first card in each carousel-item
+@media (max-width: 767.98px) {
+    .carousel-item .col-md-6.col-lg-4:not(:first-child) {
+        display: none;
+    }
+}
+ */
+/* On tablets: show first 2, hide the third
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .carousel-item .col-md-6.col-lg-4:nth-child(n+3) {
+        display: none;
+    }
+}
+ */
+/* On desktop: show all 3 
+@media (min-width: 992px) {
+    .carousel-item .col-md-6.col-lg-4 {
+        display: block;
+    }
 }
 */

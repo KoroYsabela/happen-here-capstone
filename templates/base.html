@@ -39,9 +39,12 @@
 </head>
 <body>
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav id="navbar" class="navbar navbar-expand-lg" data-bs-theme="light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">HappenHere</a>
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/happenhere_logo.jpg' %}" alt="HappenHere logo" class="me-2">
+                HappenHere
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -69,10 +72,6 @@
                     </li>
                     {% endif %}                   
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
@@ -103,12 +102,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top mt-auto">
+    <footer id="footer" class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top mt-auto">
         <div class="col-md-4 d-flex align-items-center">
             <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
                 <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
             </a>
-            <span class="text-muted">© 2025 HappenHere</span>
+            <span class="text-muted">© 2025 HappenHere <br>- Community Events</span>
         </div>
         <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
             <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>

@@ -4,15 +4,16 @@
     /* Fonts */
     --headings-font: "Raleway", sans-serif;
     --main-font: "Roboto", sans-serif;
-    --primary-bg-color: #F4E1B0;    /* Wheat */
-    --secondary-bg-color: #A5D6A7;  /* Celadon */
-    --primary-font-color: #4E342E;  /* Van Dyke*/
+    --primary-bg-colour: #F4E1B0;    /* Wheat */
+    --secondary-bg-colour: #A5D6A7;  /* Celadon */
+    --tertiary-bg-colour: #2E7D32;  /* Office Green */
+    --primary-font-colour: #4E342E;  /* Van Dyke*/
 }
 
 /* Global styles */
 body {
     font-family: var(--main-font);
-    color: var(--primary-font-color);
+    color: var(--primary-font-colour);
 }
 
 h1,
@@ -28,18 +29,83 @@ h5 {
     margin-bottom: 2rem;
 }
 
+/* base.html */
 /* Navbar | Navigation section */
 #navbar {
-    background-color: var(--primary-bg-color);
+    background-color: var(--primary-bg-colour);
     
 }
 
 #navbar a {
-    color: var(--primary-font-color);
+    color: var(--primary-font-colour);
 }
 
 #navbar .navbar-toggler {
     background-color: white;
+}
+
+#navbar .navbar-toggler .navbar-toggler-icon {
+    color: black;
+}
+
+/* Footer */
+
+#social-networks i {
+    font-size: 160%;
+    padding: 5%;
+    color: var(--primary-font-colour);
+}
+
+/* index.html */
+/* Hero section */
+#hero {
+    height: 400px;
+    width: 100%;
+    background-color: var(--secondary-bg-colour);
+    background: url("../images/hero.webp") no-repeat center center/cover;
+    position: relative;
+}
+
+#hero #heroText {
+    background: rgba(211, 211, 211, 0.7);
+}
+
+#hero #heroText .lead {
+    font-weight: bold;
+}
+
+.btnAllEvents {
+    background-color: var(--secondary-bg-colour);
+    color: var(--primary-font-colour);
+    font-weight: 500;
+}
+
+/* Events Detail section */
+
+/* Masthead styles */
+.masthead { 
+    padding: 1.5rem 0; 
+}
+
+.masthead .masthead-text { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
+
+.masthead-image .image-container { 
+    overflow: hidden; 
+    border-radius: 6px; 
+}
+
+.masthead-image img { 
+    object-fit: cover; 
+    display: block; 
+}
+
+/* Booking Events */
+#bookingbtn {
+    background-color: var(--tertiary-bg-colour);
 }
 
 
@@ -61,34 +127,44 @@ h5 {
 
 /* My Events page */
 #myevents-tabs .nav-tabs{
-    background-color: var(--secondary-bg-color);
+    background-color: var(--secondary-bg-colour);
+    height: 5vh;
+}
+
+#myevents-tabs .nav-tabs .nav-link {
+    color: var(--main-font);
 }
 
 /* Footer section */
 #footer {
-    background-color: var(--primary-bg-color);
+    background-color: var(--primary-bg-colour);
 }
 
 /* Media Queries */
 
-/* On small screens: hide all but the first card in each carousel-item
-@media (max-width: 767.98px) {
-    .carousel-item .col-md-6.col-lg-4:not(:first-child) {
-        display: none;
-    }
+/* Medium devices (tablets, 768px and up) */
+@media screen and (min-width: 768px) {
+
 }
- */
-/* On tablets: show first 2, hide the third
-@media (min-width: 768px) and (max-width: 991.98px) {
-    .carousel-item .col-md-6.col-lg-4:nth-child(n+3) {
-        display: none;
+
+/* Large devices (tablets, 992px and up) */
+@media screen and (min-width: 992px) {
+    /* Hero */
+    #hero {
+        height: 450px;
     }
+
+    /* Masthead styles */
+    .masthead-image .image-container { height: 320px; }
+    .masthead-image img { height: 100%; }
 }
- */
-/* On desktop: show all 3 
-@media (min-width: 992px) {
-    .carousel-item .col-md-6.col-lg-4 {
-        display: block;
-    }
+
+/* Extra-large devices (tablets, 1200px and up) */
+@media screen and (min-width: 1200px) {
+
 }
-*/
+
+/* Extra-extra-large devices (tablets, 1400px and up) */
+@media screen and (min-width: 1400px) {
+
+}

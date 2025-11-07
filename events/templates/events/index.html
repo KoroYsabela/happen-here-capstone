@@ -8,16 +8,28 @@
         <!-- About -->
         <div id="about" class="section col-12 mt-1 left">
             <div class="row">
-                <h1>
-                    Welcome
-                </h1>
+                <div id="hero" class="px-4 py-5 my-4 text-center">
+                    <div id="heroText" class="position-sticky top-50 start-50">
+                        <h1 class="display-5 fw-bold mt-3">Welcome</h1>
+                        <div class="col-lg-6 mx-auto">
+                            <p class="lead mb-4">
+                                Discover. Host. Join.
+                                <br>
+                                Local events that make life more connected.
+                            </p>
+                            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                                <button type="button" class="btn btn-outline-success btn-lg px-4 gap-3 mb-3 btnAllEvents">All Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Upcoming (shows next 6-9 events)-->
         <div id="upcomingevents" class="section col-12 mt-1 left">
             <div class="row">
                 <h1>
-                    Upcoming events...
+                    Upcoming events
                 </h1>                
                 <div id="carouselUpcomingEvents" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -30,22 +42,24 @@
                                 <div class="card mb-4 shadow border-dark">
                                     <div class="card-body">
                                         <div class="image-container">
-                                        {% if "placeholder" in event.featured_image.url %}
-                                        <img class="card-img-top" src="{% static 'images/event_default.jpg' %}" alt="placeholder image">
-                                        {% else %}
-                                        <img class="card-img-top" src="{{ event.featured_image.url }}" alt="{{ event.title }}">
-                                        {% endif %}
+                                            {% if "placeholder" in event.featured_image.url %}
+                                            <img class="card-img-top" src="{% static 'images/event_default.jpg' %}" alt="placeholder image">
+                                            {% else %}
+                                            <img class="card-img-top" src="{{ event.featured_image.url }}" alt="{{ event.title }}">
+                                            {% endif %}
                                         </div>
                                         <a href="{% url 'event_detail' event.slug %}" class="event-link">
-                                        <h2 class="card-title">{{ event.title }}</h2>
+                                            <h3 class="card-title">{{ event.title|truncatewords:4 }}</h3>
                                         </a>
                                         <hr>
-                                        <p class="card-text text-muted h6">
-                                        <i class="fa-solid fa-calendar-days"></i> {{ event.date }}
-                                        </p>
-                                        <p class="card-text text-muted h6">
-                                        <i class="fa-solid fa-location-dot"></i> {{ event.location }}
-                                        </p>
+                                        <div id="dateLocationText">
+                                            <p class="card-text text-muted h6">
+                                                <i class="fa-solid fa-calendar-days"></i> {{ event.date }}
+                                            </p>
+                                            <p class="card-text text-muted h6">
+                                                <i class="fa-solid fa-location-dot"></i> {{ event.location }}
+                                            </p>    
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>
@@ -67,13 +81,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-        <!-- All Events -->
-        <div id="all-events" class="section col-12 mt-1 left">
-            <div class="row">
-                <h1>
-                    All Events
-                </h1>
         </div>
     </div>
 </div>

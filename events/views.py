@@ -109,7 +109,7 @@ def book_event(request, slug):
         if event.capacity <= 0:
             messages.error(request, "Sorry, this event is fully booked.")
             return redirect('event_detail', slug=event.slug)
-        
+
         # Check if user has already booked this event
         if Booking.objects.filter(event=event, user=request.user).exists():
             messages.info(request, "You already booked this event.")
@@ -125,3 +125,15 @@ def book_event(request, slug):
     messages.success(request, "Your booking was successful!")
     return HttpResponseRedirect(reverse('event_detail', args=[slug]))
 
+
+@login_required
+def delete_event(request, slug):
+    """
+    Delete a published event that is hosted by the user
+    """
+    event = get_object_or_404(Event, slug=slug, host=request.user)
+
+    if request.method == "POST":
+        event.delete()
+        messages.success(request, f"Your event '{event.title}' has been deleted.")
+        return redirect("myevents")

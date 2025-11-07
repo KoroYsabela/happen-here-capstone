@@ -10,9 +10,10 @@
             <div class="col-12 col-md-6 masthead-text mt-1 order-1 order-md-1">
                 <!-- Event title goes in these h1 tags -->
                 <h1 class="event-title">{{ event.title }}</h1>
-                <h5>{{event.date}}</h5>
-                <!-- Event host -->
                 <p class="event-subtitle">Hosted by {{ event.host }}</p>
+                <hr>
+                <p><i class="fa-solid fa-calendar-days"></i> {{ event.date }}</p>
+                <p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
                 <hr>
                 <!-- Capacity left -->
                 {% if event.capacity >  0 %}
@@ -32,20 +33,32 @@
                 {% endif %}
                 <!-- Edit event if user is host -->
                 {% if user.is_authenticated and event.host == user %}
-                    <button 
-                    class="btn btn-outline-secondary edit-btn" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#editEventFormModal"
-                    data-title="{{ event.title }}"
-                    data-date="{{ event.date|date:'Y-m-d\\TH:i' }}"
-                    data-capacity="{{ event.capacity }}"
-                    data-location="{{ event.location }}"
-                    data-description="{{ event.description|escapejs }}"
-                    data-slug="{{ event.slug }}"
-                    data-status="{{ event.status }}"
-                    >
-                    Edit
-                    </button>
+                    <div id="btnsConatiner">
+                        <button 
+                        class="btn btn-outline-secondary edit-btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editEventFormModal"
+                        data-title="{{ event.title }}"
+                        data-date="{{ event.date|date:'Y-m-d\\TH:i' }}"
+                        data-capacity="{{ event.capacity }}"
+                        data-location="{{ event.location }}"
+                        data-description="{{ event.description|escapejs }}"
+                        data-slug="{{ event.slug }}"
+                        data-status="{{ event.status }}"
+                        >
+                        Edit
+                        </button>
+                        <button 
+                        class="btn btn-outline-danger delete-event-btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#deleteEventFormModal"
+                        data-title="{{ event.title }}"
+                        data-slug="{{ event.slug }}"
+                        >
+                        Delete
+                        </button>                        
+                    </div>
+
                 {% endif %}                             
             </div>
             <div class="col-12 col-md-6 masthead-image mt-3 order-2 order-md-2 align-self-center">
@@ -105,16 +118,47 @@
   </div>
 </div>
 
+<!-- Delete event modal -->
+<div class="modal fade" id="deleteEventFormModal" tabindex="-1" role="dialog" aria-labelledby="delete-event-modal-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+  <form method="POST" action="{% url 'delete_event' event.slug %}">
+    <input type="hidden" name="event_slug_delete" id="eventDeleteSlugInput">                   
+        <div class="modal-header">
+          <h5 class="modal-title" id="delete-event-modal-title">Deleting Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        {% csrf_token %} 
+          <p>Are you sure you want to delete the event:<br><strong id="deleteEventName">{{ event.title }}</strong>?</p>
+          <p class="text-muted mb-0">This action cannot be undone.</p> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" name="save_draft" class="btn btn-outline-warning d-none" id="saveDraftBtn">Save as Draft</button>
+          <button type="submit" name="publish" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 <!-- event_detail.html content ends here -->
 {% endblock %}
 
 {% block extras %}
 <!-- Scripts 
+<script src="{% static 'js/events.js' %}"></script>
+
+
+<script src="{% static 'js/myevents.js' %}"></script>
 <script src="{% static 'js/eventsHome.js' %}"></script>
 --> 
-<!-- Scripts --> 
+<!-- Scripts 
 <script src="{% static 'js/myevents.js' %}"></script>
+--> 
+<!--
 {% if show_edit_modal %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -125,5 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
+-->
 {% endif %}
 {% endblock %}

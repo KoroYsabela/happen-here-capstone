@@ -133,6 +133,8 @@ h5 {
 
 #myevents-tabs .nav-tabs .nav-link {
     color: var(--main-font);
+    font-weight: 500;
+    font-size: 1.15em;
 }
 
 /* Footer section */

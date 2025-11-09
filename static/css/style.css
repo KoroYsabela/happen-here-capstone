@@ -124,8 +124,13 @@ h5 {
 /* Event BS Cards*/
 .card-img-top {
     height: 20vh;
-    object-fit: center;
 }
+
+/*
+.image-containter {
+    position: relative;
+}
+*/
 
 /*
 .image-flash {

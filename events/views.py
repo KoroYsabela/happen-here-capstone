@@ -30,10 +30,13 @@ class EventList(generic.ListView):
         )
 
 
-# class EventDetail(generic.DetailView):
-#     model = Event
-#     template_name = 'events/event_detail.html'
-#     context_object_name = 'event_detail'
+class AllEventsList(generic.ListView):
+    # Current time
+    now = timezone.now()
+
+    queryset = Event.objects.filter(status=1, date__gte=now).order_by('date')
+    template_name = "events/all_events.html"
+    paginate_by = 6
 
 
 def event_detail(request, slug):

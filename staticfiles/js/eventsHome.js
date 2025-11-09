@@ -1,4 +1,9 @@
-/*  */
+/* jshint version: */
+
+/* This whole script was made by github copilot ai:
+    - Main function: 
+        - Show only 1/2/3 cards in the carousel based on the screen size
+*/
 document.addEventListener('DOMContentLoaded', function () {
     const carouselId = 'carouselUpcomingEvents';
     const carousel = document.getElementById(carouselId);

@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+
+
 {% block content %}
 
 <div class="masthead">
   <div class="container">
     <div class="row g-0">
       <div class="col-12 col-md-6 masthead-text mt-1 order-2 order-md-1">
-        <!-- Event title goes in these h1 tags -->
         <h1 class="event-title">{{ event.title }}</h1>
         <p class="event-subtitle">Hosted by {{ event.host }}</p>
         <hr>
@@ -25,6 +26,7 @@
           {% else %}
           <div id="capacity-details">            
             {% if user.is_authenticated %}
+              <!-- Cancel booking -->
               {% if user_booking %}
                 <p>You have a space for this event.</p>
                 <button 
@@ -100,7 +102,6 @@
     </div>
   </div>
 </div>
-
 <!-- Event descrtiption -->
 <div class="container">
     <div class="row">
@@ -125,10 +126,9 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {# Render the edit form with crispy so widgets and classes are output properly #}
-          {{ edit_form | crispy }}
-          {{ edit_form.media }} 
           {% csrf_token %} 
+          {{ edit_form | crispy }}
+          {{ edit_form.media }}          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -175,7 +175,7 @@
               <button type="button" class="btn-close cancel-booking-btn" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            {% csrf_token %} 
+              {% csrf_token %} 
               <p>Are you sure you want to cancel your booking for the event:<br><strong id="cancelEventName">{{ event.title }}</strong>?</p>
             </div>
             <div class="modal-footer">
@@ -187,6 +187,5 @@
   </div>
 </div>
 
-
 <!-- event_detail.html content ends here -->
-{% endblock %}
+{% endblock content %}

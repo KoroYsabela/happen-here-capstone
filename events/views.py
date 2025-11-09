@@ -15,11 +15,8 @@ class EventList(generic.ListView):
     # Current time
     now = timezone.now()
 
-    # Use model + get_queryset to avoid evaluating querysets at import time
     model = Event
     template_name = "events/index.html"
-    # make the template context variable explicit
-    # default would be event_list
     context_object_name = 'event_list'
 
     def get_queryset(self):
@@ -40,21 +37,22 @@ class AllEventsList(generic.ListView):
 
 
 def event_detail(request, slug):
+    """
+    Display the event details in its own page
+    """
     # Current time
     now = timezone.now()
 
-    # Always fetch the event for display
     event = get_object_or_404(Event, slug=slug)
 
-    # define
+    # Define
     user_booking = None
 
-    # Provide an edit form instance (pre-filled) for template rendering.
+    # Provide an edit form instance (pre-filled)
     # Only hosts should be able to submit edits, but providing the form
     # in the template avoids template errors. The modal will only be shown
-    # when routed through the `edit_event` view (see below).
-    if request.user.is_authenticated:    # and request.user == event.host:
-
+    # when routed through the `edit_event` view
+    if request.user.is_authenticated:
         # Check if player has already booked the event
         # only when logged in otherwise causes an error
         user_booking = Booking.objects.filter(user=request.user, event=event).first()
@@ -78,20 +76,24 @@ def event_detail(request, slug):
 @login_required
 def edit_event(request, slug):
     """
-    Render the event detail page with the edit modal open for the host.
-    GET -> show modal with populated form.
-    POST -> process form submission and redirect on success.
+    In the event detail page:
+        - Show modal which includes edit form for the event
     """
     event = get_object_or_404(Event, slug=slug, host=request.user)
 
     if request.method == 'POST':
+
         form = HostEventForm(request.POST, request.FILES, instance=event)
+
         if form.is_valid():
+
             updated = form.save(commit=False)
+
             if 'publish' in request.POST:
                 updated.status = 1
             elif 'save_draft' in request.POST:
-                # prevent published -> draft transition
+                # Prevent published event from being turned back into a draft
+                # Can cause errors with users that have bookings to the event
                 if event.status == 1:
                     messages.warning(
                         request, "Published events cannot be reverted."
@@ -99,13 +101,13 @@ def edit_event(request, slug):
                 else:
                     updated.status = 0
                     messages.info(request, "Event saved as draft.")
+
             updated.save()
             messages.success(request, "Event updated.")
             return redirect('event_detail', slug=event.slug)
         else:
-            messages.error(request, "Please correct the errors in the form.")
             # Fall through to re-render page with modal and errors
-
+            messages.error(request, "Please correct the errors in the form.")
     else:
         form = HostEventForm(instance=event)
 
@@ -126,7 +128,7 @@ def book_event(request, slug):
     event = get_object_or_404(Event, slug=slug)
 
     if request.method == "POST":
-        # Check if there is still space incase of overbooking)
+        # Prevent overbooking
         if event.capacity <= 0:
             messages.error(request, "Sorry, this event is fully booked.")
             return redirect('event_detail', slug=event.slug)
@@ -153,8 +155,7 @@ def cancel_event(request, slug, booking_id):
     Allow the user that has booked a space in the event to cancel.
     Increases event capacity again by 1.
 
-    This view expects both the event slug and the booking id so the
-    JavaScript can build an action like: /<slug>/<booking_id>/cancel/
+    Use booking id to get the booking for the slug
     """
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
     event = booking.event
@@ -170,9 +171,7 @@ def cancel_event(request, slug, booking_id):
     messages.success(request, f"Your booking for '{event.title}' has been cancelled.")
     return redirect('event_detail', slug=event.slug)
 
-    #return HttpResponseRedirect(reverse('event_detail', args=[slug]))
 
-    
 @login_required
 def delete_event(request, slug):
     """

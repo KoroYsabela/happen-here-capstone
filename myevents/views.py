@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .forms import HostEventForm
 from events.models import Event, Booking
-# Unused imports removed
 
 
 @login_required
@@ -13,7 +12,7 @@ def myevents_page(request):
     Render the My Events page
     Handles:
         - Hosting event
-        - Editing event
+        - View booked & booked past events
     """
     # Current time
     now = timezone.now()
@@ -29,11 +28,12 @@ def myevents_page(request):
     # Past Events
     booked_past = Booking.objects.filter(user=request.user, event__status=1, event__date__lt=now).select_related('event').order_by('event__date')
 
-    # Host Event & Edit Form
+    # Host Event Form
     event_form = HostEventForm()
 
     if request.method == "POST":    
         event_form = HostEventForm(request.POST, request.FILES)
+        
         if event_form.is_valid():
             event = event_form.save(commit=False)
             event.host = request.user

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
-from .models import Event, Review, Booking
+from .models import Event, Booking
 
 
 @admin.register(Event)
@@ -12,5 +12,4 @@ class EventAdmin(SummernoteModelAdmin):
 
 
 # Register your models here.
-admin.site.register(Review)
 admin.site.register(Booking)

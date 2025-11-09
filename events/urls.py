@@ -1,6 +1,3 @@
-#from django.urls import path
-#from .views import home_page_view
-
 from . import views
 from django.urls import path
 

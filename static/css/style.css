@@ -80,6 +80,18 @@ h5 {
     font-weight: 500;
 }
 
+.event-link {
+    text-decoration: none;    
+}
+
+.event-link .card-title {
+    color: var(--primary-font-colour);
+}
+
+#dateLocationText .card-text {
+    color: var(--primary-font-colour);
+}
+
 /* Events Detail section */
 
 /* Masthead styles */

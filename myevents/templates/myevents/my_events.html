@@ -42,9 +42,9 @@
                         <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
                         {% endif %}
                         <div class="card-body">
-                          <h5 class="card-title">{{ event.title }}</h5>
-                          <p class="text-muted small mb-2">📍 {{ event.location }}</p>
-                          <p class="text-muted small">🗓️ {{ event.date|date:"M d, Y H:i" }}</p>
+                          <h5 class="card-title">{{ event.title }}</h5>                          
+                          <p class="text-muted small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
+                          <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
                           <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                                
                         </div>
                       </div>
@@ -71,8 +71,9 @@
                           {% endif %}
                           <div class="card-body">
                             <h5 class="card-title">{{ event.title }}</h5>
-                            <p class="text-muted small mb-2">📍 {{ event.location }}</p>
-                            <p class="small">🗓️ {{ event.date|date:"M d, Y H:i" }}</p>
+                            <p class="small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
+                            <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
+                            
                             <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>
                           </div>
                         </div>
@@ -102,13 +103,11 @@
                           {% else %}
                           <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
                           {% endif %}
-                          <div class="card-body">.
+                          <div class="card-body">
                             <h5 class="card-title">{{ event.title }}</h5>
-                            <p class="text-muted small mb-2">📍 {{ event.location }}</p>
-                            <p class="small">🗓️ {{ event.date|date:"M d, Y H:i" }}</p>
-                            <button>
-                              Cancel
-                            </button>
+                            <p class="small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
+                            <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
+                            
                             <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                               
                           </div>                        
                         </div>
@@ -137,10 +136,10 @@
                           {% else %}
                           <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
                           {% endif %}
-                          <div class="card-body">.
+                          <div class="card-body">
                             <h5 class="card-title">{{ event.title }}</h5>
-                            <p class="text-muted small mb-2">📍 {{ event.location }}</p>
-                            <p class="small">🗓️ {{ event.date|date:"M d, Y H:i" }}</p>
+                            <p class="small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
+                            <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
                             <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                               
                           </div>                        
                         </div>

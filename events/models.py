@@ -73,7 +73,7 @@ class Booking(models.Model):
     """
     Store a event booking related to :model:`events.Event`
     """
-    user      = models.ForeignKey(
+    user        = models.ForeignKey(
                     User, on_delete=models.CASCADE, related_name="event_booker")
     event       = models.ForeignKey(
                     Event, on_delete=models.CASCADE, related_name="event_bookings")

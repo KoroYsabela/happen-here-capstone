@@ -24,18 +24,24 @@ class EventList(generic.ListView):
 
     def get_queryset(self):
         """Return published events ordered by date."""
-        return Event.objects.filter(status=1, date__gte=self.now).order_by('date')  # show only up to next 9 events
+        return (
+            Event.objects.filter(status=1, date__gte=self.now)
+            .order_by("date")
+        )
 
 
-#class EventDetail(generic.DetailView):
-#    model = Event
-#    template_name = 'events/event_detail.html'
-#    context_object_name = 'event_detail'
+# class EventDetail(generic.DetailView):
+#     model = Event
+#     template_name = 'events/event_detail.html'
+#     context_object_name = 'event_detail'
 
 
 def event_detail(request, slug):
     # Always fetch the event for display
     event = get_object_or_404(Event, slug=slug)
+
+    # Check if player has already booked the event
+    user_booking = Booking.objects.filter(user=request.user, event=event).first()
 
     # Provide an edit form instance (pre-filled) for template rendering.
     # Only hosts should be able to submit edits, but providing the form
@@ -52,6 +58,7 @@ def event_detail(request, slug):
         {
             "event": event,
             "edit_form": edit_form,
+            "user_booking": user_booking,
         },
     )
 
@@ -74,7 +81,9 @@ def edit_event(request, slug):
             elif 'save_draft' in request.POST:
                 # prevent published -> draft transition
                 if event.status == 1:
-                    messages.warning(request, "Published events cannot be reverted to drafts.")
+                    messages.warning(
+                        request, "Published events cannot be reverted."
+                    )
                 else:
                     updated.status = 0
                     messages.info(request, "Event saved as draft.")
@@ -83,7 +92,7 @@ def edit_event(request, slug):
             return redirect('event_detail', slug=event.slug)
         else:
             messages.error(request, "Please correct the errors in the form.")
-            # Fall through to re-render the page with modal open and errors shown
+            # Fall through to re-render page with modal and errors
 
     else:
         form = HostEventForm(instance=event)
@@ -126,6 +135,32 @@ def book_event(request, slug):
     return HttpResponseRedirect(reverse('event_detail', args=[slug]))
 
 
+@login_required
+def cancel_event(request, slug, booking_id):
+    """
+    Allow the user that has booked a space in the event to cancel.
+    Increases event capacity again by 1.
+
+    This view expects both the event slug and the booking id so the
+    JavaScript can build an action like: /<slug>/<booking_id>/cancel/
+    """
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    event = booking.event
+
+    if request.method == "POST":
+        # Delete booking
+        booking.delete()
+
+        # Increase event capacity by 1
+        event.capacity += 1
+        event.save(update_fields=["capacity"])
+        
+    messages.success(request, f"Your booking for '{event.title}' has been cancelled.")
+    return redirect('event_detail', slug=event.slug)
+
+    #return HttpResponseRedirect(reverse('event_detail', args=[slug]))
+
+    
 @login_required
 def delete_event(request, slug):
     """

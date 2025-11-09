@@ -3,87 +3,102 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
 <div class="masthead">
-    <div class="container">
-        <div class="row g-0">
-            <div class="col-12 col-md-6 masthead-text mt-1 order-1 order-md-1">
-                <!-- Event title goes in these h1 tags -->
-                <h1 class="event-title">{{ event.title }}</h1>
-                <p class="event-subtitle">Hosted by {{ event.host }}</p>
-                <hr>
-                <p><i class="fa-solid fa-calendar-days"></i> {{ event.date }}</p>
-                <p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
-                <hr>
-                <!-- Capacity left -->
-                {% if event.capacity >  0 %}
-                <p class="event-subtitle"><strong>Spaces left: </strong>{{ event.capacity}}</p>
-                    <!-- Booking button -->
-                    {% if user.is_authenticated %}
-                    <form action="{% url 'book_event' event.slug %}" method="post">
-                        {% csrf_token %}
-                        <button id="bookingbtn" type="submit" class="btn btn-signup"
-                        >Book</button>
-                    </form>
-                    {% else %}
-                        <p class="event-subtitle"><a href="{% url 'account_login' %}">Log in</a> to book</p>
-                    {% endif %}
+  <div class="container">
+    <div class="row g-0">
+      <div class="col-12 col-md-6 masthead-text mt-1 order-1 order-md-1">
+        <!-- Event title goes in these h1 tags -->
+        <h1 class="event-title">{{ event.title }}</h1>
+        <p class="event-subtitle">Hosted by {{ event.host }}</p>
+        <hr>
+        <p><i class="fa-solid fa-calendar-days"></i> {{ event.date }}</p>
+        <p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
+        <p class="event-subtitle"><i class="fa-solid fa-people-group"></i> <strong>Spaces left: </strong>{{ event.capacity}}</p>
+        <hr>                
+        <div id="capacity">
+          <!-- Capacity left -->
+          <div id="capacity-details">            
+              {% if user.is_authenticated %}
+                {% if user_booking %}
+                  <p>You have a space for this event.</p>
+                  <button 
+                      type="button" 
+                      class="btn btn-outline-danger cancel-trigger" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#cancelEventFormModal"
+                      data-booking-id="{{ user_booking.id }}"
+                      data-slug="{{ event.slug }}">
+                      Cancel Booking
+                    </button>
                 {% else %}
-                <p class="event-subtitle">This event is fully booked!</p>
+                  <!-- Book event form -->
+                  <form method="POST" action="{% url 'book_event' event.slug %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success" {% if event.capacity <= 0 %}disabled{% endif %}>
+                      {% if event.capacity > 0 %}
+                        Book
+                      {% else %}
+                        Fully Booked
+                      {% endif %}
+                    </button>
+                  </form>
                 {% endif %}
-                <!-- Edit event if user is host -->
-                {% if user.is_authenticated and event.host == user %}
-                    <div id="btnsConatiner">
-                        <button 
-                        class="btn btn-outline-secondary edit-btn" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#editEventFormModal"
-                        data-title="{{ event.title }}"
-                        data-date="{{ event.date|date:'Y-m-d\\TH:i' }}"
-                        data-capacity="{{ event.capacity }}"
-                        data-location="{{ event.location }}"
-                        data-description="{{ event.description|escapejs }}"
-                        data-slug="{{ event.slug }}"
-                        data-status="{{ event.status }}"
-                        >
-                        Edit
-                        </button>
-                        <button 
-                        class="btn btn-outline-danger delete-event-btn" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#deleteEventFormModal"
-                        data-title="{{ event.title }}"
-                        data-slug="{{ event.slug }}"
-                        >
-                        Delete
-                        </button>                        
-                    </div>
-
-                {% endif %}                             
-            </div>
-            <div class="col-12 col-md-6 masthead-image mt-3 order-2 order-md-2 align-self-center">
-                <div class="image-container mx-3">
-                    {% if "placeholder" in event.featured_image.url %}
-                    <img class="img-fluid w-100" src="{% static 'images/event_default.jpg' %}"
-                    alt="placeholder image">
-                    {% else %}
-                    <img class="img-fluid w-100" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
-                    {% endif %}
-                </div>
-            </div>
+              {% else %}
+                <p class="text-muted">Please <a href="{% url 'account_login' %}">Log in</a> to book.</p>
+              {% endif %}      
+          </div>
         </div>
+        <div id="edit-details">
+          <!-- Edit event if user is host -->
+          {% if user.is_authenticated and event.host == user %}
+            <hr> 
+            <div id="btnsConatiner">
+              <button 
+                class="btn btn-outline-secondary edit-btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#editEventFormModal"
+                data-title="{{ event.title }}"
+                data-date="{{ event.date|date:'Y-m-d\\TH:i' }}"
+                data-capacity="{{ event.capacity }}"
+                data-location="{{ event.location }}"
+                data-description="{{ event.description|escapejs }}"
+                data-slug="{{ event.slug }}"
+                data-status="{{ event.status }}"
+                >
+                Edit
+              </button>
+              <button 
+                class="btn btn-outline-danger delete-event-btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#deleteEventFormModal"
+                data-title="{{ event.title }}"
+                data-slug="{{ event.slug }}"
+                >
+                Delete
+              </button>                        
+            </div>
+          {% endif %}            
+        </div>                           
+      </div>
+        <div class="col-12 col-md-6 masthead-image mt-3 order-2 order-md-2 align-self-center">
+          <div class="image-container mx-3">
+              {% if "placeholder" in event.featured_image.url %}
+              <img class="img-fluid w-100" src="{% static 'images/event_default.jpg' %}"
+              alt="placeholder image">
+              {% else %}
+              <img class="img-fluid w-100" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
+              {% endif %}
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
+<!-- Event descrtiption -->
 <div class="container">
     <div class="row">
         <div class="col card mb-4  mt-3 left  top">
             <div class="card-body">
-                <!-- The post content goes inside the card-text. -->
-                <!-- Use the | safe filter inside the template tags -->
-                <h2>
-                    {{ coder }}
-                </h2> 
                 <article class="card-text">
                     {{ event.description | safe }}
                 </article>
@@ -135,8 +150,30 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" name="save_draft" class="btn btn-outline-warning d-none" id="saveDraftBtn">Save as Draft</button>
           <button type="submit" name="publish" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Cancel event modal -->
+<div class="modal fade" id="cancelEventFormModal" tabindex="-1" role="dialog" aria-labelledby="cancel-event-modal-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+  <form id="cancelEventBookingForm" method="POST" action="{% if user_booking %}{% url 'cancel_event' event.slug user_booking.id %}{% endif %}">
+    <input type="hidden" name="event_slug_cancel" id="eventCancelSlugInput">                   
+        <div class="modal-header">
+          <h5 class="modal-title" id="cancel-event-modal-title">Cancel booking</h5>
+          <button type="button" class="btn-close cancel-booking-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        {% csrf_token %} 
+          <p>Are you sure you want to cancel your booking for the event:<br><strong id="cancelEventName">{{ event.title }}</strong>?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, keep the booking</button>
+          <button type="submit" name="publish" class="btn btn-danger cancel-event-booking-btn">Yes, Cancel</button>
         </div>
       </form>
     </div>
@@ -145,30 +182,4 @@
 
 
 <!-- event_detail.html content ends here -->
-{% endblock %}
-
-{% block extras %}
-<!-- Scripts 
-<script src="{% static 'js/events.js' %}"></script>
-
-
-<script src="{% static 'js/myevents.js' %}"></script>
-<script src="{% static 'js/eventsHome.js' %}"></script>
---> 
-<!-- Scripts 
-<script src="{% static 'js/myevents.js' %}"></script>
---> 
-<!--
-{% if show_edit_modal %}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const modalEl = document.getElementById('editEventFormModal');
-    if (modalEl && typeof bootstrap !== 'undefined') {
-        const modal = new bootstrap.Modal(modalEl);
-        modal.show();
-    }
-});
-</script>
--->
-{% endif %}
 {% endblock %}

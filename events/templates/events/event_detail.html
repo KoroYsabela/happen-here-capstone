@@ -17,36 +17,43 @@
         <hr>                
         <div id="capacity">
           <!-- Capacity left -->
+          <!-- Dont allow booking or cancel booking if the event date has already passed --> 
+          {% if event.date < now %}
+          <div id="capacity-details">
+            <p>This event has already past.<p>
+          </div> 
+          {% else %}
           <div id="capacity-details">            
-              {% if user.is_authenticated %}
-                {% if user_booking %}
-                  <p>You have a space for this event.</p>
-                  <button 
-                      type="button" 
-                      class="btn btn-outline-danger cancel-trigger" 
-                      data-bs-toggle="modal" 
-                      data-bs-target="#cancelEventFormModal"
-                      data-booking-id="{{ user_booking.id }}"
-                      data-slug="{{ event.slug }}">
-                      Cancel Booking
-                    </button>
-                {% else %}
-                  <!-- Book event form -->
-                  <form method="POST" action="{% url 'book_event' event.slug %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-success" {% if event.capacity <= 0 %}disabled{% endif %}>
-                      {% if event.capacity > 0 %}
-                        Book
-                      {% else %}
-                        Fully Booked
-                      {% endif %}
-                    </button>
-                  </form>
-                {% endif %}
+            {% if user.is_authenticated %}
+              {% if user_booking %}
+                <p>You have a space for this event.</p>
+                <button 
+                    type="button" 
+                    class="btn btn-outline-danger cancel-trigger" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#cancelEventFormModal"
+                    data-booking-id="{{ user_booking.id }}"
+                    data-slug="{{ event.slug }}">
+                    Cancel Booking
+                  </button>
               {% else %}
-                <p class="text-muted">Please <a href="{% url 'account_login' %}">Log in</a> to book.</p>
-              {% endif %}      
+                <!-- Book event form -->
+                <form method="POST" action="{% url 'book_event' event.slug %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-success" {% if event.capacity <= 0 %}disabled{% endif %}>
+                    {% if event.capacity > 0 %}
+                      Book
+                    {% else %}
+                      Fully Booked
+                    {% endif %}
+                  </button>
+                </form>
+              {% endif %}
+            {% else %}
+              <p class="text-muted">Please <a href="{% url 'account_login' %}">Log in</a> to book.</p>
+            {% endif %}    
           </div>
+          {% endif %} 
         </div>
         <div id="edit-details">
           <!-- Edit event if user is host -->
@@ -158,10 +165,12 @@
 </div>
 
 <!-- Cancel event modal -->
+{% if user_booking %}
+<!-- Cancel event modal -->
 <div class="modal fade" id="cancelEventFormModal" tabindex="-1" role="dialog" aria-labelledby="cancel-event-modal-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form id="cancelEventBookingForm" method="POST" action="{% if user_booking %}{% url 'cancel_event' event.slug user_booking.id %}{% else %}#{% endif %}">
+      <form id="cancelEventBookingForm" method="POST" action="{% url 'cancel_event' event.slug user_booking.id %}">
         <input type="hidden" name="event_slug_cancel" id="eventCancelSlugInput">                   
             <div class="modal-header">
               <h5 class="modal-title" id="cancel-event-modal-title">Cancel booking</h5>
@@ -179,6 +188,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 
 
 <!-- event_detail.html content ends here -->

@@ -40,6 +40,9 @@ class AllEventsList(generic.ListView):
 
 
 def event_detail(request, slug):
+    # Current time
+    now = timezone.now()
+
     # Always fetch the event for display
     event = get_object_or_404(Event, slug=slug)
 
@@ -50,12 +53,12 @@ def event_detail(request, slug):
     # Only hosts should be able to submit edits, but providing the form
     # in the template avoids template errors. The modal will only be shown
     # when routed through the `edit_event` view (see below).
-    if request.user.is_authenticated and request.user == event.host:
+    if request.user.is_authenticated:    # and request.user == event.host:
 
         # Check if player has already booked the event
         # only when logged in otherwise causes an error
-        user_booking = Booking.objects.filter(user=request.user, event=event).first()        
-        
+        user_booking = Booking.objects.filter(user=request.user, event=event).first()
+
         edit_form = HostEventForm(instance=event)
     else:
         edit_form = HostEventForm()
@@ -67,6 +70,7 @@ def event_detail(request, slug):
             "event": event,
             "edit_form": edit_form,
             "user_booking": user_booking,
+            "now": now,
         },
     )
 

@@ -43,14 +43,19 @@ def event_detail(request, slug):
     # Always fetch the event for display
     event = get_object_or_404(Event, slug=slug)
 
-    # Check if player has already booked the event
-    user_booking = Booking.objects.filter(user=request.user, event=event).first()
+    # define
+    user_booking = None
 
     # Provide an edit form instance (pre-filled) for template rendering.
     # Only hosts should be able to submit edits, but providing the form
     # in the template avoids template errors. The modal will only be shown
     # when routed through the `edit_event` view (see below).
     if request.user.is_authenticated and request.user == event.host:
+
+        # Check if player has already booked the event
+        # only when logged in otherwise causes an error
+        user_booking = Booking.objects.filter(user=request.user, event=event).first()        
+        
         edit_form = HostEventForm(instance=event)
     else:
         edit_form = HostEventForm()

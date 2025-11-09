@@ -31,22 +31,31 @@
               <div class="published-events">
                 <h3>Published Events</h3>
                 {% if published_events %}
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-md-3 g-3">
                   {% for event in published_events %}
                     <div class="col">
-                      <div class="card h-100 border-success shadow">
-                        {% if "placeholder" in event.featured_image.url %}
-                        <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
-                        alt="placeholder image">
-                        {% else %}
-                        <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
-                        {% endif %}
-                        <div class="card-body">
-                          <h5 class="card-title">{{ event.title }}</h5>                          
-                          <p class="text-muted small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
-                          <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
-                          <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                                
-                        </div>
+                      <div class="card mb-1 border-success shadow">
+                          <div class="card-body">
+                              <div class="image-container">
+                                  {% if "placeholder" in event.featured_image.url %}
+                                  <img class="card-img-top" src="{% static 'images/event_default.jpg' %}" alt="placeholder image">
+                                  {% else %}
+                                  <img class="card-img-top" src="{{ event.featured_image.url }}" alt="{{ event.title }}">
+                                  {% endif %}
+                              </div>
+                              <a href="{% url 'event_detail' event.slug %}" class="event-link">
+                                  <h3 class="card-title">{{ event.title }}</h3>
+                              </a>
+                              <hr>
+                              <div class="dateLocationText">
+                                  <p class="card-text h6">
+                                      <i class="fa-soldar-days"></i> {{ event.date }}
+                                  </p>
+                                  <p class="card-text h6">
+                                      <i class="fa-solid fa-location-dot"></i> {{ event.location }}
+                                  </p>    
+                              </div>                                        
+                          </div>
                       </div>
                     </div>
                   {% endfor %}
@@ -62,22 +71,30 @@
                   <div class="row row-cols-1 row-cols-md-3 g-4">
                     {% for event in draft_events %}
                       <div class="col">
-                        <div class="card h-100 shadow border-warning">
-                          {% if "placeholder" in event.featured_image.url %}
-                          <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
-                          alt="placeholder image">
-                          {% else %}
-                          <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
-                          {% endif %}
+                        <div class="card mb-4 border-warning shadow">
                           <div class="card-body">
-                            <h5 class="card-title">{{ event.title }}</h5>
-                            <p class="small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
-                            <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
-                            
-                            <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                              <div class="image-container">
+                                  {% if "placeholder" in event.featured_image.url %}
+                                  <img class="card-img-top" src="{% static 'images/event_default.jpg' %}" alt="placeholder image">
+                                  {% else %}
+                                  <img class="card-img-top" src="{{ event.featured_image.url }}" alt="{{ event.title }}">
+                                  {% endif %}
+                              </div>
+                              <a href="{% url 'event_detail' event.slug %}" class="event-link">
+                                  <h3 class="card-title">{{ event.title }}</h3>
+                              </a>
+                              <hr>
+                              <div class="dateLocationText">
+                                  <p class="card-text h6">
+                                      <i class="fa-sondar-days"></i> {{ event.date }}
+                                  </p>
+                                  <p class="card-text h6">
+                                      <i class="fa-solid fa-location-dot"></i> {{ event.location }}
+                                  </p>    
+                              </div>                                        
                           </div>
-                        </div>
                       </div>
+                    </div>
                     {% endfor %}
                   </div>
                 {% else %}
@@ -96,20 +113,28 @@
                     {% for booked_upcoming_event in booked_upcoming %}
                       {% with event=booked_upcoming_event.event%}
                       <div class="col">
-                        <div class="card h-100 shadow border-primary">
-                          {% if "placeholder" in event.featured_image.url %}
-                          <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
-                          alt="placeholder image">
-                          {% else %}
-                          <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
-                          {% endif %}
+                        <div class="card mb-4 border-primary shadow">
                           <div class="card-body">
-                            <h5 class="card-title">{{ event.title }}</h5>
-                            <p class="small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
-                            <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
-                            
-                            <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                               
-                          </div>                        
+                            <div class="image-container">
+                              {% if "placeholder" in event.featured_image.url %}
+                              <img class="card-img-top" src="{% static 'images/event_default.jpg' %}" alt="placeholder image">
+                              {% else %}
+                              <img class="card-img-top" src="{{ event.featured_image.url }}" alt="{{ event.title }}">
+                              {% endif %}
+                            </div>
+                            <a href="{% url 'event_detail' event.slug %}" class="event-link">
+                              <h3 class="card-title">{{ event.title }}</h3>
+                            </a>
+                            <hr>
+                            <div class="dateLocationText">
+                              <p class="card-text h6">
+                                  <i class="fa-sondar-days"></i> {{ event.date }}
+                              </p>
+                              <p class="card-text h6">
+                                  <i class="fa-solid fa-location-dot"></i> {{ event.location }}
+                              </p>    
+                            </div>                                        
+                          </div>
                         </div>
                       </div>
                       {% endwith %}
@@ -129,19 +154,28 @@
                     {% for booked_past_event in booked_past %}
                       {% with event=booked_past_event.event%}
                       <div class="col">
-                        <div class="card h-100 shadow border-secondary">
-                          {% if "placeholder" in event.featured_image.url %}
-                          <img class="card-img-top" src="{% static 'images/event_default.jpg' %}"
-                          alt="placeholder image">
-                          {% else %}
-                          <img class="card-img-top" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">
-                          {% endif %}
+                        <div class="card mb-4 border-secondary shadow">
                           <div class="card-body">
-                            <h5 class="card-title">{{ event.title }}</h5>
-                            <p class="small"><i class="fa-solid fa-calendar-days"></i> {{ event.date|date:"M d, Y H:i" }}</p>
-                            <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
-                            <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-primary btn-sm">View Details</a>                               
-                          </div>                        
+                            <div class="image-container">
+                              {% if "placeholder" in event.featured_image.url %}
+                              <img class="card-img-top" src="{% static 'images/event_default.jpg' %}" alt="placeholder image">
+                              {% else %}
+                              <img class="card-img-top" src="{{ event.featured_image.url }}" alt="{{ event.title }}">
+                              {% endif %}
+                            </div>
+                            <a href="{% url 'event_detail' event.slug %}" class="event-link">
+                              <h3 class="card-title">{{ event.title }}</h3>
+                            </a>
+                            <hr>
+                            <div class="dateLocationText">
+                              <p class="card-text h6">
+                                  <i class="fa-soldar-days"></i> {{ event.date }}
+                              </p>
+                              <p class="card-text h6">
+                                  <i class="fa-solid fa-location-dot"></i> {{ event.location }}
+                              </p>    
+                            </div>                                        
+                          </div>
                         </div>
                       </div>
                       {% endwith %}
@@ -180,10 +214,4 @@
   </div>
 </div>
 
-{% endblock %}
-
-{% block extras %}
-<!-- Scripts 
-<script src="{% static 'js/myevents.js' %}"></script>
---> 
-{% endblock %}
+{% endblock content %}

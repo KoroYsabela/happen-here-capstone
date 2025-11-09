@@ -165,12 +165,10 @@
 </div>
 
 <!-- Cancel event modal -->
-{% if user_booking %}
-<!-- Cancel event modal -->
 <div class="modal fade" id="cancelEventFormModal" tabindex="-1" role="dialog" aria-labelledby="cancel-event-modal-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form id="cancelEventBookingForm" method="POST" action="{% url 'cancel_event' event.slug user_booking.id %}">
+      <form id="cancelEventBookingForm" method="POST" action="{% if user_booking %}{% url 'cancel_event' event.slug user_booking.id %}{% else %}#{% endif %}">
         <input type="hidden" name="event_slug_cancel" id="eventCancelSlugInput">                   
             <div class="modal-header">
               <h5 class="modal-title" id="cancel-event-modal-title">Cancel booking</h5>
@@ -188,7 +186,6 @@
     </div>
   </div>
 </div>
-{% endif %}
 
 
 <!-- event_detail.html content ends here -->

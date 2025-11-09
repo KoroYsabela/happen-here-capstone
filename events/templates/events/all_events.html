@@ -7,14 +7,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="section col-12 mt-1 left">
+        <div class="setion col-12 mt-1 left">
             <div class="row">
-                <h1>
+                <h1 class="my-2 py-2">
                     All events
                 </h1>
                 {% for event in event_list %}
                     <div class="col-md-4">
-                        <div class="card mb-4">
+                        <div class="card mb-4 border-dark shadow">
                             <div class="card-body">
                                 <div class="image-container">
                                     {% if "placeholder" in event.featured_image.url %}
@@ -27,14 +27,14 @@
                                     <h3 class="card-title">{{ event.title|truncatewords:4 }}</h3>
                                 </a>
                                 <hr>
-                                <div id="dateLocationText">
-                                    <p class="card-text text-muted h6">
+                                <div class="dateLocationText">
+                                    <p class="card-text h6">
                                         <i class="fa-solid fa-calendar-days"></i> {{ event.date }}
                                     </p>
-                                    <p class="card-text text-muted h6">
+                                    <p class="card-text h6">
                                         <i class="fa-solid fa-location-dot"></i> {{ event.location }}
                                     </p>    
-                                </div>
+                                </div>                                        
                             </div>
                         </div>
                     </div>
@@ -61,10 +61,4 @@
     {% endif %}
 </div>
 
-{% endblock%}
-
-
-{% block extras %}
-<!-- Scripts --> 
-<script src="{% static 'js/eventsHome.js' %}"></script>
-{% endblock %}
+{% endblock content%}

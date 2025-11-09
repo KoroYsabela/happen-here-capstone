@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 
-<!-- index.html content starts here -->
 <div class="container">
     <div class="row">
         <!-- About -->
@@ -41,7 +40,7 @@
                                 <div class="row">
                             {% endif %}
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card mb-4 shadow border-dark">
+                                <div class="card mb-4 border-dark shadow">
                                     <div class="card-body">
                                         <div class="image-container">
                                             {% if "placeholder" in event.featured_image.url %}
@@ -54,11 +53,11 @@
                                             <h3 class="card-title">{{ event.title|truncatewords:4 }}</h3>
                                         </a>
                                         <hr>
-                                        <div id="dateLocationText">
-                                            <p class="card-text text-muted h6">
+                                        <div class="dateLocationText">
+                                            <p class="card-text h6">
                                                 <i class="fa-solid fa-calendar-days"></i> {{ event.date }}
                                             </p>
-                                            <p class="card-text text-muted h6">
+                                            <p class="card-text h6">
                                                 <i class="fa-solid fa-location-dot"></i> {{ event.location }}
                                             </p>    
                                         </div>                                        
@@ -87,10 +86,9 @@
     </div>
 </div>
 
-<!-- index.html content ends here -->
-{% endblock %}
+{% endblock content %}
 
 {% block extras %}
 <!-- Scripts --> 
 <script src="{% static 'js/eventsHome.js' %}"></script>
-{% endblock %}
+{% endblock extras %}

@@ -141,6 +141,8 @@
                       {% endwith %}
                     {% endfor %}
                   </div>
+                  {% else %}
+                  <p class="text-muted">You have no booked events yet.</p>
                   {% endif %} 
                 </div>                  
               </div>
@@ -182,6 +184,8 @@
                       {% endwith %}
                     {% endfor %}
                   </div>
+                  {% else %}
+                  <p class="text-muted">You have no past booked events yet.</p>
                   {% endif %} 
                 </div>                  
               </div>

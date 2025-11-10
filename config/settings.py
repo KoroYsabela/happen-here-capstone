@@ -35,7 +35,6 @@ DEBUG = False
 ALLOWED_HOSTS = ['.herokuapp.com',
                  '127.0.0.1',]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -96,7 +95,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -173,4 +171,9 @@ SUMMERNOTE_CONFIG = {
     'summernote': {
         'width': '100%',
     }
+}
+
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL'),
+    'SECURE': True,
 }

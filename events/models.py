@@ -12,20 +12,22 @@ STATUS = ((0, "Draft"), (1, "Published"))
 
 class Event(models.Model):
     """
-    Store a single event created by hose (user)
+    Store a single event created by host (user)
     """
-    title       = models.CharField(max_length=100, unique=True)
-    slug        = models.CharField(unique=True, blank=True)
-    date        = models.DateTimeField()
-    location    = models.CharField(max_length=150)
-    host        =  models.ForeignKey(
-                    User, on_delete=models.CASCADE, related_name="hosted_events")
+    title = models.CharField(max_length=100, unique=True)
+    slug = models.CharField(unique=True, blank=True)
+    date = models.DateTimeField()
+    location = models.CharField(max_length=150)
+    host = models.ForeignKey(
+                    User,
+                    on_delete=models.CASCADE,
+                    related_name="hosted_events")
     description = models.TextField(blank=True)
-    capacity    = models.PositiveIntegerField()
+    capacity = models.PositiveIntegerField()
     featured_image = CloudinaryField('image', default='placeholder')
-    created_on  = models.DateTimeField(auto_now_add=True)
-    status      = models.IntegerField(choices=STATUS, default=0)
-    updated_on  = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=STATUS, default=0)
+    updated_on = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         # Create slug from title if not already set (from admin)
@@ -52,11 +54,15 @@ class Booking(models.Model):
     """
     Store a event booking related to :model:`events.Event`
     """
-    user        = models.ForeignKey(
-                    User, on_delete=models.CASCADE, related_name="event_booker")
-    event       = models.ForeignKey(
-                    Event, on_delete=models.CASCADE, related_name="event_bookings")
-    booked_at   = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+                    User,
+                    on_delete=models.CASCADE,
+                    related_name="event_booker")
+    event = models.ForeignKey(
+                    Event,
+                    on_delete=models.CASCADE,
+                    related_name="event_bookings")
+    booked_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["booked_at"]

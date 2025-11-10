@@ -55,7 +55,9 @@ def event_detail(request, slug):
     if request.user.is_authenticated:
         # Check if player has already booked the event
         # only when logged in otherwise causes an error
-        user_booking = Booking.objects.filter(user=request.user, event=event).first()
+        user_booking = Booking.objects.filter(
+            user=request.user,
+            event=event).first()
 
         edit_form = HostEventForm(instance=event)
     else:
@@ -168,7 +170,8 @@ def cancel_event(request, slug, booking_id):
         event.capacity += 1
         event.save(update_fields=["capacity"])
         
-    messages.success(request, f"Your booking for '{event.title}' has been cancelled.")
+    messages.success(request,
+                     f"Your booking for '{event.title}' has been cancelled.")
     return redirect('event_detail', slug=event.slug)
 
 
@@ -181,5 +184,6 @@ def delete_event(request, slug):
 
     if request.method == "POST":
         event.delete()
-        messages.success(request, f"Your event '{event.title}' has been deleted.")
+        messages.success(request,
+                         f"Your event '{event.title}' has been deleted.")
         return redirect("myevents")

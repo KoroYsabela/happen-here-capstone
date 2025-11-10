@@ -168,7 +168,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SUMMERNOTE_CONFIG = {
-    # Customise summerote size    
+    'iframe': True,
+    # Customise summerote size
     'summernote': {
         'width': '100%',
     }

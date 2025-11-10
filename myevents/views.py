@@ -31,9 +31,9 @@ def myevents_page(request):
     # Host Event Form
     event_form = HostEventForm()
 
-    if request.method == "POST":    
+    if request.method == "POST":
         event_form = HostEventForm(request.POST, request.FILES)
-        
+
         if event_form.is_valid():
             event = event_form.save(commit=False)
             event.host = request.user

@@ -1,4 +1,4 @@
-/* jshint version: */
+/* jshint version: 2.13.6 */
 
 /* This whole script was made by github copilot ai:
     - Main function: 

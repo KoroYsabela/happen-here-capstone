@@ -92,7 +92,7 @@
         <div class="col-12 col-md-6 masthead-image mt-md-3 order-1 order-md-2 align-self-center">
           <div class="image-container mx-3">
               {% if "placeholder" in event.featured_image.url %}
-              <img class="img-fluid w-100" src="{% static 'images/event_default.jpg' %}"
+              <img class="img-fluid w-100" src="{% static 'images/event_default.webp' %}"
               alt="placeholder image">
               {% else %}
               <img class="img-fluid w-100" src=" {{ event.featured_image.url }}" alt="{{ event.title }}">

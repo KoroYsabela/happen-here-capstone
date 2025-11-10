@@ -183,7 +183,7 @@ Everything in the tables were tested and validated, but due to high number of fi
 | :---: | :-----------: |
 | `events/templates/events/index.html`  | <img src="static/images/README/hh_home_index_html_validation.png" alt="HappenHere index.html validation pass" width="70%"> |
 | `events/templates/events/all_events.html` | PASS |
-| `events/templates/events/event_detail.html` | WARNING & ERRORS (if using link to an event) - due to the use of django summernote widgets / PASS (when using `.html` file with warnings from the use of django code) |
+| `events/templates/events/event_detail.html` | WARNING & ERRORS (if using link to an event) - due to the use of django summernote widgets <br> PASS (when using `.html` file with warnings from the use of django code) |
 | `myevents/templates/myevents/my_events.html` | PASS |
 | `myevents/templates/myevents/login.html` | PASS |
 | `myevents/templates/myevents/logout.html` | PASS |
@@ -215,14 +215,37 @@ Everything in the tables were tested and validated, but due to high number of fi
 | `myevents/views.py` | PASS |
 
 ### Googles Lighthouse Performance
-| Device | Performance | Accessibility | Best Practices | SEO |
-| :---: | :-----------: | :-----------: | :-----------: | :-----------: |
-| Mobile | ... | ... | ... | ... |
-| Desktop | ... | ... | ... | ... |
+Performance test on general pages:
+
+#### Homepage:
+| Device | Image | 
+| :---: | :-----------: |
+| Mobile | <img src="static/images/README/lighthouse/gl_home_mobile.png" alt="HappenHere home google lighthouse test - mobile" width="70%"> |
+| Desktop | <img src="static/images/README/lighthouse/gl_home_desktop.png" alt="HappenHere home google lighthouse test - desktop" width="70%"> |
+
+#### All Events:
+| Device | Performance |
+| :---: | :-----------: |
+| Mobile | <img src="static/images/README/lighthouse/gl_allevents_mobile.png" alt="HappenHere all events google lighthouse test - mobile" width="70%"> |
+| Desktop | <img src="static/images/README/lighthouse/gl_eventdetail_desktop.png" alt="HappenHere all events google lighthouse test - desktop" width="70%"> |
+
+#### Event Detail (any):
+| Device | Performance |
+| :---: | :-----------: |
+| Mobile | <img src="static/images/README/lighthouse/gl_eventdetail_mobile.png" alt="HappenHere event detail google lighthouse test - mobile" width="70%"> |
+| Desktop | <img src="static/images/README/lighthouse/gl_eventdetail_desktop.png" alt="HappenHere event detail google lighthouse test - desktop" width="70%"> |
+
+#### My Events:
+| Device | Image | 
+| :---: | :-----------: |
+| Mobile | <img src="static/images/README/lighthouse/gl_myevents_mobile.png" alt="HappenHere my events google lighthouse test - mobile" width="70%"> |
+| Desktop | <img src="static/images/README/lighthouse/gl_myevents_desktop.png" alt="HappenHere my events google lighthouse test - desktop" width="70%"> |
 
 Performance is slightly lower due to having images for the event cards. Although a max size limit was added to do how much clouadinary could handle, in addition to the compressed default image, a lot of images on a page will naturally cause performance issues.
 
-Best Practices were also lower due HTTPS from allowing the user to upload their own image.
+Best Practices were also lower due HTTPS from allowing the user to upload their own image, with no necessary checks.
+
+These issues were not able to be fixed properly due to time constraints. 
 
 ### WAVE Accessibility
 General testing on different pages using this tool showed no errors:
@@ -269,8 +292,29 @@ Overall, due to other priorities at the time of the project and time constraints
 Additionally, the high usage of AI to help me with this project helped me realise it is better to use it to help understand problems and give examples/options of how to go about fixing the problem. This was because some code it would provide would cause more problems/errors which in turn wasted a lot of time also trying to fix. 
 
 ## Deployment
-Procedure to 
+Procedure to deploy the application:
+    
+1. Github
+    - Login and create a repository
+    - Clone this repo
+    - Install requirements.txt using ```pip3 install -r requirements.txt```
+        - Heroku needs the ```Procfile```, ```.python-version``` and ```requirements.txt``` for building the app
+2. Cloudinary
+    - Login to cloudinary and take the API key
+3. env.py
+    - Make sure your file hase the following:
+        SECRET_KEY, DATABASE_URL, CLOUDINARY_URL
+    - Link make sure these are properly linked in the ```config/settings.py``` file
+    - Make sure this is in your ```.gitignore``` file
 
+4. Heroku
+    - Login and create a new app
+    - Link heroku to your github account and the repository 
+    - In app settings > config vars > reveal config vars
+        - Add the following from your ```env.py``` : SECRET_KEY, DATABASE_URL, CLOUDINARY_URL
+    - Manual deployment:
+        - Go to Deploy section
+        - Click on ```Deploy Branch```, once this has run press ```view```, which will open the app in a new tab.
 
 View the deployed project on heroku: <a href="https://happenhere-ea5273c6b3f0.herokuapp.com/" target="_blank">HappenHere</a>
 
@@ -284,3 +328,26 @@ View the deployed project on heroku: <a href="https://happenhere-ea5273c6b3f0.he
 | Other | Git<br/>Github<br/>ChatGTP<br/>Github Copilot |
 
 ## Credits
+### Django Help Online
+- [Django Documentation](https://ui.dev/amiresponsive)
+- [django-summernote](https://github.com/lqez/django-summernote)
+
+Youtube Tutorials:
+- [Bootstrap 5 Card Carousel | Multiple items carousel](https://www.youtube.com/watch?v=kHPm_AlxP7U)
+- [Python Django Web Framework - Full Course for Beginners](https://www.youtube.com/watch?v=F5mRW0jo-U4)
+- [Create A Simple Blog With Python and Django - Django Blog #1 (Playlist)](https://www.youtube.com/watch?v=B40bteAMM_M&list=PLCC34OHNcOtr025c1kHSPrnP18YPB-NFi)
+
+Other Help:
+- [Stackoverflow](https://stackoverflow.com/questions)
+
+### Other Software / Tools:
+- [Lucid.co](https://lucid.co/)
+- [Google fonts](https://fonts.google.com/)
+- [Fontawesome](https://fontawesome.com/)
+- [imagecolorpicker](https://imagecolorpicker.com/)
+- [tinyjpg](https://tinyjpg.com/)
+- [freeconvert](https://www.freeconvert.com/)
+- [favicon.io](https://favicon.io/)
+- [Adobe Express resizer](https://www.adobe.com/express/feature/image/resize)
+- [iloveimg](https://www.iloveimg.com/compress-image)
+- [Markdown](https://www.markdownguide.org/)
